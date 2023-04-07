@@ -1,13 +1,10 @@
 package com.example.websocket_netty_demo.websocket;
 
 import lombok.extern.slf4j.Slf4j;
-import org.java_websocket.WebSocket;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.websocket.*;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.example.websocket_netty_demo.websocket.webSocketStarter.startWS;
 
@@ -17,9 +14,11 @@ import static com.example.websocket_netty_demo.websocket.webSocketStarter.startW
 @Component
 public class webSocketClientHandler{
 
+
     @OnOpen
     public void onOpen(Session session) {
         webSocketStarter.session = session;
+        log.info(session.getId()+" is coming");
     }
 
     @OnMessage
@@ -30,12 +29,13 @@ public class webSocketClientHandler{
     @OnError
     public void processError(Throwable t) {
         webSocketStarter.session = null;
-//        try {
-//            Thread.sleep(5000);
-//            startWS();
-//        } catch (InterruptedException e) {
-//            log.error("---websocket processError InterruptedException---", e);
-//        }
+        try {
+            Thread.sleep(5000);
+            if(webSocketStarter.uri!=null||!webSocketStarter.uri.trim().equals(""))
+                startWS(webSocketStarter.uri);
+        } catch (InterruptedException e) {
+            log.error("---websocket processError InterruptedException---", e);
+        }
         log.error("---websocket processError error---", t);
     }
 
@@ -44,7 +44,7 @@ public class webSocketClientHandler{
         log.error(session.getId() + closeReason.toString());
     }
 
-    public void send(String sessionId, String message) {
+    public void send(String message) {
         try {
             log.info("send Msg:" + message);
             if (Objects.nonNull(webSocketStarter.session)) {

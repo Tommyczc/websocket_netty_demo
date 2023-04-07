@@ -4,15 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import java.util.List;
+
 import java.util.concurrent.ConcurrentHashMap;
 
-
-/**
- * @program: netty4demo
- * @description:
- * @create: 2019-12-23 11:24
- */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ConcurrentHashMap<String,ChannelHandlerContext> channelList=new ConcurrentHashMap<>();
