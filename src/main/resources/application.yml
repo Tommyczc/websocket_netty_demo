@@ -1,0 +1,18 @@
+#?????
+server:
+    #??
+    port: 8083
+    tomcat:
+        uri-encoding: UTF-8
+
+
+spring:
+    #thymeleaf??
+    thymeleaf:
+        prefix: classpath:/templates/
+        suffix: .html
+        mode: HTML
+        encoding: UTF-8
+        cache: false
+        check-template: true
+        check-template-location: true
