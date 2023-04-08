@@ -4,16 +4,18 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ConcurrentHashMap<String,ChannelHandlerContext> channelList=new ConcurrentHashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelActive");
+        log.info("channelActive");
         //todo add channel to a static container
         channelList.put(ctx.channel().remoteAddress().toString(),ctx);
 
@@ -45,7 +47,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("客户端请求到了..." + ctx.channel().remoteAddress());
+        log.info("客户端请求到了..." + ctx.channel().remoteAddress());
 //        ByteBuf buf = (ByteBuf) msg;
 //        byte[] message=new byte[buf.readableBytes()];
 //        buf.readBytes(message);
@@ -68,7 +70,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println(cause.getMessage());
+        log.warn(cause.getMessage());
         ctx.close();
     }
 

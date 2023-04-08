@@ -14,7 +14,7 @@ import static com.example.websocket_netty_demo.websocket.webSocketStarter.startW
 @Component
 public class webSocketClientHandler{
 
-    private Thread refreshThread=null;
+    //private Thread refreshThread=null;
     @OnOpen
     public void onOpen(Session session) {
         webSocketStarter.session = session;
@@ -42,6 +42,7 @@ public class webSocketClientHandler{
     public void processClose(Session session, CloseReason closeReason) {
         log.error(session.getId() + closeReason.toString());
         //todo stop thread
+
     }
 
     public void send(String message) {

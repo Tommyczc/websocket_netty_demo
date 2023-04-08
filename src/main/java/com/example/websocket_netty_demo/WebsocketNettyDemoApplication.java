@@ -12,7 +12,7 @@ public class WebsocketNettyDemoApplication {
 
         SpringApplication.run(WebsocketNettyDemoApplication.class, args);
         nettyStarter.starter();
-        webSocketStarter.startWS("ws://127.0.0.1:8082/websocket/hello-kitty");
+        webSocketStarter.startWS("ws://127.0.0.1:8082/websocket/hello-kitty/1234");
     }
 
 }

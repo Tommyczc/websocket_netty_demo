@@ -8,7 +8,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class nettyStarter {
 
     public static void starter(){
@@ -35,9 +37,9 @@ public class nettyStarter {
                             socketChannel.pipeline().addLast(new NettyServerHandler());
                         }
                     });
-            System.out.println("服务启动了....");
+            log.info("服务端启动了....");
             // 绑定端口  启动服务
-            ChannelFuture channelFuture = bootstrap.bind(6668).sync();
+            ChannelFuture channelFuture = bootstrap.bind(9000).sync();
             // 对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
