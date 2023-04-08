@@ -15,7 +15,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.info("channelActive");
+        log.info("[Netty] channelActive");
         //todo add channel to a static container
         channelList.put(ctx.channel().remoteAddress().toString(),ctx);
 
@@ -47,7 +47,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        log.info("客户端请求到了..." + ctx.channel().remoteAddress());
+        log.info("[Netty] 客户端请求到了..." + ctx.channel().remoteAddress());
 //        ByteBuf buf = (ByteBuf) msg;
 //        byte[] message=new byte[buf.readableBytes()];
 //        buf.readBytes(message);

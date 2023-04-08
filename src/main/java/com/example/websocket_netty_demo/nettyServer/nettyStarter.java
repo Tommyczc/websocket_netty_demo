@@ -45,14 +45,14 @@ public class nettyStarter implements CommandLineRunner {
                             socketChannel.pipeline().addLast(new NettyServerHandler());
                         }
                     });
-            log.info("Netty server starting....");
+            log.info("[Netty] Netty server starting....");
             // 绑定端口  启动服务
             ChannelFuture channelFuture = bootstrap.bind(9000).sync();
             channel = channelFuture.channel().closeFuture().sync().channel();
             // 对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
-            log.info("Caught an exception {}", e.getMessage());
+            log.warn("[Netty] Caught an exception {}", e.getMessage());
         } finally {
             // 优雅停服
             bossGroup.shutdownGracefully();
@@ -63,7 +63,7 @@ public class nettyStarter implements CommandLineRunner {
     @PreDestroy
     public void stop() {
         if (channel != null) {
-            log.info("Netty Server close");
+            log.info("[Netty] Netty Server close");
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }
