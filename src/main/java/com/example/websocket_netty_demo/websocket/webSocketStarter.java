@@ -1,6 +1,7 @@
 package com.example.websocket_netty_demo.websocket;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.ContainerProvider;
@@ -19,6 +20,7 @@ public class webSocketStarter {
     public static String uri;
 
     public static void startWS(String uri) {
+        log.info("Try to start web socket client");
         try {
             if (webSocketStarter.session != null) {
                 webSocketStarter.session.close();
