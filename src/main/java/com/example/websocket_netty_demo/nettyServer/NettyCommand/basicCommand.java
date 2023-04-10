@@ -1,4 +1,4 @@
-package com.example.websocket_netty_demo.command;
+package com.example.websocket_netty_demo.nettyServer.NettyCommand;
 
 public enum basicCommand {
 
