@@ -13,6 +13,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ConcurrentHashMap<String,ChannelHandlerContext> channelList=new ConcurrentHashMap<>();
 
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("[Netty] channelActive");
