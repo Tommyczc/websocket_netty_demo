@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 
 import static com.example.websocket_netty_demo.websocket.webSocketStarter.startWS;
@@ -14,19 +15,20 @@ import static com.example.websocket_netty_demo.websocket.webSocketStarter.startW
 @Component
 public class webSocketClientHandler{
 
-    //private Thread refreshThread=null;
+    private Thread refreshThread=null;
+
     @OnOpen
     public void onOpen(Session session) {
         webSocketStarter.session = session;
     }
 
     @OnMessage
-    public void processMessage(String message) {
+    public void onMessage(byte[] message) {
         log.info("websocket 接收推送消息 "+message);
     }
 
     @OnError
-    public void processError(Throwable t) {
+    public void onError(Throwable t) {
         webSocketStarter.session = null;
         try {
             Thread.sleep(5000);
@@ -39,17 +41,18 @@ public class webSocketClientHandler{
     }
 
     @OnClose
-    public void processClose(Session session, CloseReason closeReason) {
+    public void onClose(Session session, CloseReason closeReason) {
         log.error(session.getId() + closeReason.toString());
         //todo stop thread
 
     }
 
-    public void send(String message) {
+    public static void send(byte[] message) {
         try {
             log.info("send Msg:" + message);
             if (Objects.nonNull(webSocketStarter.session)) {
-                webSocketStarter.session.getBasicRemote().sendText(message);
+                ByteBuffer buf=ByteBuffer.wrap(message);
+                webSocketStarter.session.getBasicRemote().sendBinary(buf);
             } else {
                 log.info("---websocket error----");
             }
