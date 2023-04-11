@@ -1,18 +1,18 @@
-package com.example.websocket_netty_demo.nettyServer.NettyCommand;
+package com.example.websocket_netty_demo.nettyServer.NettyCommand.enums;
 
-public enum basicCommand {
+public enum constantCommand {
 
     Time("Time","00");
     private String commandName;
     private String order;
 
-    basicCommand(String commandName, String order) {
+    constantCommand(String commandName, String order) {
         this.commandName = commandName;
         this.order = order;
     }
 
     public static String getOrder(String name){
-        for (basicCommand cc : basicCommand.values()) {
+        for (constantCommand cc : constantCommand.values()) {
             if(cc.getCommandName().equals(name)){
                 return cc.order;
             }
@@ -21,7 +21,7 @@ public enum basicCommand {
     }
 
     public static String getName(String order){
-        for (basicCommand cc : basicCommand.values()) {
+        for (constantCommand cc : constantCommand.values()) {
             if(cc.getOrder().equals(order)){
                 return cc.commandName;
             }

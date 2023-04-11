@@ -6,7 +6,6 @@ public class basicCommand {
 
     public static void sendMessage(byte[] content){
 
-
         webSocketClientHandler.send(content);
     }
 }
