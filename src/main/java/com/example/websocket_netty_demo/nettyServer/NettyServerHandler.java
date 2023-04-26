@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +17,17 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ConcurrentHashMap<String,chipInstance> chipList=new ConcurrentHashMap<>();
 
+    @PostConstruct
+    void init(){
+        //todo make some data
+        String address1="192.169.2.13";
+        chipInstance chip1=new chipInstance("local1",address1);
+
+        String address2="192.169.4.113";
+        chipInstance chip2=new chipInstance("local2",address1);
+        chipList.put(address1,chip1);
+        chipList.put(address2,chip2);
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

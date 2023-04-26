@@ -19,17 +19,22 @@ public class webSocketClientHandler{
 
     private Thread refreshThread=null;
 
+
     @OnOpen
     public void onOpen(Session session) {
         webSocketStarter.session = session;
         refreshThread=new Thread(()->{
-            send(updateResult().toJSONString());
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException e) {
-                log.warn("[websocket] error---",e);
+            while(true) {
+                send(updateResult().toJSONString());
+                try {
+                    Thread.sleep(800);
+                    log.info("[websocket] sending update command");
+                } catch (InterruptedException e) {
+                    log.warn("[websocket] error---", e);
+                }
             }
         });
+        refreshThread.start();
     }
 
     @OnMessage
