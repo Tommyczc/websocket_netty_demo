@@ -1,5 +1,6 @@
 package com.example.websocket_netty_demo.websocket;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +21,13 @@ public class webSocketClientHandler{
     @OnOpen
     public void onOpen(Session session) {
         webSocketStarter.session = session;
+        refreshThread=new Thread(()->{
+
+        });
     }
 
     @OnMessage
-    public void onMessage(byte[] message) {
+    public void onMessage(String message) {
         log.info("websocket 接收推送消息 "+message);
     }
 
@@ -47,12 +51,17 @@ public class webSocketClientHandler{
 
     }
 
-    public static void send(byte[] message) {
+    private JSONObject updateResult(){
+        JSONObject js=new JSONObject();
+
+        return js;
+    }
+
+    public static void send(String message) {
         try {
             log.info("send Msg:" + message);
             if (Objects.nonNull(webSocketStarter.session)) {
-                ByteBuffer buf=ByteBuffer.wrap(message);
-                webSocketStarter.session.getBasicRemote().sendBinary(buf);
+                webSocketStarter.session.getBasicRemote().sendText(message);
             } else {
                 log.info("---websocket error----");
             }

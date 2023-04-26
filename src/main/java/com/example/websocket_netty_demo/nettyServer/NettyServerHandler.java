@@ -79,5 +79,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx){
 
     }
+
+    //public
 }
 

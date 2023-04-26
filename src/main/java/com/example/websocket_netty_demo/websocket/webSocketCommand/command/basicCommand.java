@@ -4,7 +4,7 @@ import com.example.websocket_netty_demo.websocket.webSocketClientHandler;
 
 public class basicCommand {
 
-    public static void sendMessage(byte[] content){
+    public static void sendMessage(String content){
 
         webSocketClientHandler.send(content);
     }
