@@ -1,6 +1,7 @@
 package com.example.websocket_netty_demo.websocket;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.websocket_netty_demo.nettyServer.NettyServerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +23,19 @@ public class webSocketClientHandler{
     public void onOpen(Session session) {
         webSocketStarter.session = session;
         refreshThread=new Thread(()->{
-
+            send(updateResult().toJSONString());
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException e) {
+                log.warn("[websocket] error---",e);
+            }
         });
     }
 
     @OnMessage
     public void onMessage(String message) {
-        log.info("websocket 接收推送消息 "+message);
+        log.info("[websocket] 接收推送消息 "+message);
+
     }
 
     @OnError
@@ -39,9 +46,9 @@ public class webSocketClientHandler{
             if(webSocketStarter.uri!=null||!webSocketStarter.uri.trim().equals(""))
                 startWS(webSocketStarter.uri);
         } catch (InterruptedException e) {
-            log.error("---websocket processError InterruptedException---", e);
+            log.error("[websocket] processError InterruptedException---", e);
         }
-        log.error("---websocket processError error---", t);
+        log.error("[websocket] processError error---", t);
     }
 
     @OnClose
@@ -53,7 +60,8 @@ public class webSocketClientHandler{
 
     private JSONObject updateResult(){
         JSONObject js=new JSONObject();
-
+        js.put("order","update");
+        js.put("chipList",NettyServerHandler.getAllChips());
         return js;
     }
 
@@ -63,11 +71,11 @@ public class webSocketClientHandler{
             if (Objects.nonNull(webSocketStarter.session)) {
                 webSocketStarter.session.getBasicRemote().sendText(message);
             } else {
-                log.info("---websocket error----");
+                log.info("[websocket] error----");
             }
 
         } catch (Exception e) {
-            log.error("---websocket send error---", e);
+            log.error("[websocket] send error---", e);
         }
 
     }

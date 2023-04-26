@@ -6,12 +6,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ConcurrentHashMap<String,ChannelHandlerContext> channelList=new ConcurrentHashMap<>();
+
+    public static ConcurrentHashMap<String,chipInstance> chipList=new ConcurrentHashMap<>();
 
 
     @Override
@@ -80,6 +83,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     }
 
-    //public
+    public static ArrayList<chipInstance> getAllChips(){
+        ArrayList<chipInstance> theList=new ArrayList<>();
+        for(chipInstance chip : chipList.values()){
+            theList.add(chip);
+        }
+        return theList;
+    }
 }
 
