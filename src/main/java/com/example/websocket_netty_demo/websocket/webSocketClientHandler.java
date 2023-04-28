@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Objects;
 
 import static com.example.websocket_netty_demo.websocket.webSocketStarter.startWS;
