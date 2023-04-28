@@ -10,7 +10,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Component//当成组件处理
 @Order(value = 1)//这里表示启动顺序
@@ -20,6 +24,26 @@ public class nettyStarter implements CommandLineRunner {
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
     private Channel channel;
+
+    @PostConstruct
+    void init(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        //todo make some data
+        String address1="192.169.2.13";
+        chipInstance chip1=new chipInstance("local1",address1);
+        chip1.setDeviceName("linux");
+        chip1.setUpdateDate(formatter.format(date));
+
+        String address2="192.169.4.113";
+        chipInstance chip2=new chipInstance("local2",address1);
+        chip2.setDeviceName("windows");
+        chip2.setUpdateDate(formatter.format(date));
+
+        NettyServerHandler.chipList.put(address1,chip1);
+        NettyServerHandler.chipList.put(address2,chip2);
+    }
 
     public void start(){
         // 创建对应的 线程池

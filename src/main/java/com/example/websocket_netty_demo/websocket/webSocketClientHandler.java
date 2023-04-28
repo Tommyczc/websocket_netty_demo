@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -18,13 +19,13 @@ import static com.example.websocket_netty_demo.websocket.webSocketStarter.startW
 public class webSocketClientHandler{
 
     private Thread refreshThread=null;
-
+    private volatile boolean isStopped=false;
 
     @OnOpen
     public void onOpen(Session session) {
         webSocketStarter.session = session;
         refreshThread=new Thread(()->{
-            while(true) {
+            while(!isStopped) {
                 send(updateResult().toJSONString());
                 try {
                     Thread.sleep(800);
@@ -47,6 +48,7 @@ public class webSocketClientHandler{
     public void onError(Throwable t) {
         webSocketStarter.session = null;
         try {
+            //isStopped=true;
             Thread.sleep(5000);
             if(webSocketStarter.uri!=null||!webSocketStarter.uri.trim().equals(""))
                 startWS(webSocketStarter.uri);
@@ -59,8 +61,13 @@ public class webSocketClientHandler{
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         log.error(session.getId() + closeReason.toString());
+        try {
+            session.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         //todo stop thread
-
+        this.isStopped=true;
     }
 
     private JSONObject updateResult(){

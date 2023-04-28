@@ -7,6 +7,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,18 +18,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public static ConcurrentHashMap<String,chipInstance> chipList=new ConcurrentHashMap<>();
 
-    @PostConstruct
-    void init(){
-        //todo make some data
-        String address1="192.169.2.13";
-        chipInstance chip1=new chipInstance("local1",address1);
-
-        String address2="192.169.4.113";
-        chipInstance chip2=new chipInstance("local2",address1);
-        chipList.put(address1,chip1);
-        chipList.put(address2,chip2);
-    }
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("[Netty] channelActive");
@@ -37,21 +26,21 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
         //String command="AA 07 02 00 01 02 00 5A A5 0B";
         //byte[] resetCommand=HexUtils.parseHex2Byte(command);
-        byte[] resetCommand=new byte[]{
-                (byte) 0xAA,
-                0x07,
-                0x02,
-                0x00,
-                0x01,
-                0x02,
-                0x00,
-                0x5A,
-                (byte) 0xA5,
-                0x0B,
-        };
-        ByteBuf buf = Unpooled.buffer(resetCommand.length);
-        buf.writeBytes(resetCommand);
-        ctx.writeAndFlush(buf);
+//        byte[] resetCommand=new byte[]{
+//                (byte) 0xAA,
+//                0x07,
+//                0x02,
+//                0x00,
+//                0x01,
+//                0x02,
+//                0x00,
+//                0x5A,
+//                (byte) 0xA5,
+//                0x0B,
+//        };
+//        ByteBuf buf = Unpooled.buffer(resetCommand.length);
+//        buf.writeBytes(resetCommand);
+//        ctx.writeAndFlush(buf);
     }
 
 
@@ -96,8 +85,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     public static ArrayList<chipInstance> getAllChips(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
         ArrayList<chipInstance> theList=new ArrayList<>();
-        for(chipInstance chip : chipList.values()){
+
+        for(chipInstance chip:NettyServerHandler.chipList.values()){
+            chip.setUpdateDate(formatter.format(date));
             theList.add(chip);
         }
         return theList;
